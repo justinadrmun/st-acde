@@ -4,34 +4,57 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def generate_comparison_data():
-    np.random.seed(2)
-    data = pd.DataFrame({
-        'Group': np.random.choice(['Control', 'Treatment'], size=100),
-        'Score': np.random.normal(loc=50, scale=10, size=100)
-    })
-    return data
+def generate_tab1():
+        st.write("""
+                    What is the relationship between the material that appears publicly in the ‘end point’ of 
+                    the exhibition and the material on which the curatorial process draws? In other words, to 
+                    create KMN exhibition? 
+                 """
+        )
+
+def generate_tab2():
+        st.write("""
+                    Who legitimates artists – function of critics, commentators (the change to online commentary)? 
+                 """
+        )
+
+def generate_tab3():
+        st.write("""
+                    Is there material in AustLit about people in KMN (i.e. writers who are also visual artists) 
+                 """
+        )
+
+def generate_tab4():
+        st.write("""
+                    Key words that constellate around women’s art criticism as they appear in the KMN critical book and 
+                    cognate art/literary criticism  ")
+                """
+        )
+
+def generate_tab5():
+        st.write("""
+                    In what sense does ‘feminism’ represent white women? 
+                """)
+        
+def generate_tab6():
+        st.write("""
+                    Link between Anne Marsh entries (in the dataset) and material that appears in other collections
+                """
+        )
+
+page3_dict = {
+    'Curatorial Process': generate_tab1,
+    'Legitimation': generate_tab2,
+    'AustLit': generate_tab3,
+    'Key Words': generate_tab4,
+    'Feminism': generate_tab5,
+    'Anne Marsh entries': generate_tab6
+}
 
 def show():
-    st.header("Section 3: Comparisons")
-    st.write("Comparison between different groups or categories.")
+        st.header("Art criticism and its impact on the KMN reception and legacy")
 
-    data = generate_comparison_data()
-    st.subheader("Grouped Bar Chart")
-    group_means = data.groupby('Group')['Score'].mean().reset_index()
-    fig, ax = plt.subplots()
-    sns.barplot(x='Group', y='Score', data=group_means, ax=ax)
-    ax.set_title('Average Score by Group')
-    st.pyplot(fig)
-
-    st.subheader("Box Plot")
-    fig, ax = plt.subplots()
-    sns.boxplot(x='Group', y='Score', data=data, ax=ax)
-    ax.set_title('Score Distribution by Group')
-    st.pyplot(fig)
-
-    st.subheader("Violin Plot")
-    fig, ax = plt.subplots()
-    sns.violinplot(x='Group', y='Score', data=data, ax=ax)
-    ax.set_title('Score Violation by Group')
-    st.pyplot(fig)
+        tabs = st.tabs(list(page3_dict.keys()))
+        for i, tab in enumerate(tabs):
+                with tab:
+                        page3_dict[list(page3_dict.keys())[i]]()

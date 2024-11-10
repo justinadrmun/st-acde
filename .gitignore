@@ -9,5 +9,8 @@ __pycache__/
 .DS_Store
 
 # python and ipynb files
-eda.ipynb
+*.ipynb
 check_versions.py
+
+# data
+data/

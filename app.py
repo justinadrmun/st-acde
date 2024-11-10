@@ -1,4 +1,5 @@
 import streamlit as st
+from utils import fetch_kmn_data
 from dotenv import load_dotenv
 import os
 
@@ -86,8 +87,33 @@ if check_password():
                         - Significant missing values in columns like "First Nations People Group (from Know My Name only)" (243 missing), "Date of Birth" (157 missing), "Place of Death Latitude" (186 missing), and "Link to AWR" (261 missing).
             """
             )
+
+        st.caption("Snapshot of the last 5 rows of the dataset")
+        st.dataframe(fetch_kmn_data().tail())
+        
         st.divider()
-        st.write("Some basic visual overviews of the KMN dataset (where each artist in the collection comes from)")
+        st.caption("Some basic visual overviews of the KMN dataset (where each artist in the collection comes from)")
+        kmn = fetch_kmn_data()
+        col1, col2, col3 = st.columns([1, 1, 3])
+
+        with col2:
+            # plot a horizontal bar chart of the number of artists from each country
+            st.write("No. of artists from each country")
+            st.bar_chart(kmn["Country of Birth"].value_counts(), horizontal=True)
+        
+        with col1:
+            # plot a horizontal bar chart of the number of artists from each state
+            st.write("No. of artists from each state")
+            st.bar_chart(kmn["State of Birth"].value_counts(), horizontal=True)
+
+        with col3:
+            # plot a map of the artists' birthplaces
+            st.write("Map of artists' birthplaces")
+            st.map(kmn[["Place of Birth Latitude", "Place of Birth Longitude"]]
+                    .dropna()
+                    .rename(
+                    columns={"Place of Birth Latitude": "lat", 
+                                "Place of Birth Longitude": "lon"}))
 
     if selection == "Exhibition":
         import page_1

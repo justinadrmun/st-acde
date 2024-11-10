@@ -13,4 +13,5 @@ __pycache__/
 check_versions.py
 
 # data
-data/
+data/kmn.xlsx
+data/acde_person.csv

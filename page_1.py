@@ -1,7 +1,14 @@
 import streamlit as st
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-from utils import fetch_kmn_data
+from utils import (
+        fetch_kmn_data, 
+        fetch_archibald_participant_data,
+        fetch_daao_kmn_related_people_records,
+        fetch_daao_kmn_related_people
+)
+from custom_plot_funcs.archies_timeline import plot_timeline
 
 def generate_tab1(params):
         st.caption("""
@@ -26,12 +33,12 @@ def generate_tab1(params):
         frame = frame[frame["Collective/Individual"] == "Individual"]
 
         categories = [
-        ("Most related events", 'related_events'),
-        ("Most related people", 'related_people'),
-        ("Most related places", 'related_places'),
-        ("Most related recognitions", 'related_recognitions'),
-        ("Most related resources", 'related_resources'),
-        ("Most related works", 'related_works')
+        ("Most related event records", 'related_events'),
+        ("Most related people records", 'related_people'),
+        ("Most related place records", 'related_places'),
+        ("Most related recognition records", 'related_recognitions'),
+        ("Most related resource records", 'related_resources'),
+        ("Most related work records", 'related_works')
         ]
 
         for i in range(0, len(categories), 3):
@@ -52,16 +59,53 @@ def generate_tab2(params):
         )
 
 def generate_tab3(params):
-        st.markdown("""
-                 - KMN meets Archibald – data viz overview.
-                 - Show women in the Archibald who also feature in KMN
+        st.caption("""
+                 KMN meets Archibald – data viz overview. Show women in the Archibald who also feature in KMN.
                  """
         )
+        found_participants = fetch_archibald_participant_data(filter="kmn")
+        winners = found_participants[
+                        found_participants['3']\
+                                .str.contains('Winner', na=False)][["1","2","3","Year"]]\
+                                .rename(columns={"1":"KMN Artist", "2":"Title", "3":"Prize"})\
+                                .sort_values(by="Year", ascending=True)
+        st.write(f"**KMN Artists who have won the Archibald Prize:**")
+        for rows in [winners[:4].iterrows(), winners[4:].iterrows()]:
+                cols = st.columns(4)
+
+                for i, (_, row) in enumerate(rows):
+                        with cols[i % 4]:
+                                st.metric(label=str(row["Year"]), value=row["KMN Artist"])
+                                st.image(f"images/archies_{str(row['Year'])}.jpg", caption=row["Title"])
+        st.divider()
+        st.write(f"**KMN Artists who have participated in the Archibald Prize:**")
+        _, col2, _ = st.columns([1, 5, 1])
+        with col2:
+                plot_timeline()
 
 def generate_tab4(params):
-        st.write("""
+        st.caption("""
                  Data imagery – who is included/ relationship to DAAO, gender differences, geographic spread, date range for birth of subjects?
                 """)
+
+        st.divider()
+        columns = st.columns([0.7, 0.3])
+
+        with columns[0]:
+                st.write("**Predicate type of DAAO people relations**")
+                related_records = fetch_daao_kmn_related_people_records()
+                st.bar_chart(related_records["predicate"].value_counts(), horizontal=True)
+                
+        with columns[1]:
+                st.write("**Gender distribution of DAAO related people**")
+                daao_related_people = fetch_daao_kmn_related_people()
+
+                fig, ax = plt.subplots()
+                daao_related_people["gender"].value_counts().plot.pie(autopct='%1.1f%%', ax=ax)
+                ax.set_ylabel("")
+                ax.set_xlabel("")
+                st.pyplot(fig)
+
         
 def generate_tab5(params):
         st.markdown("""

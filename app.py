@@ -1,4 +1,6 @@
 import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
 from utils import fetch_kmn_data
 from dotenv import load_dotenv
 import os
@@ -89,11 +91,65 @@ if check_password():
             )
 
         st.caption("Snapshot of the last 5 rows of the dataset")
-        st.dataframe(fetch_kmn_data().tail())
+        kmn = fetch_kmn_data()
+        st.dataframe(kmn.tail())
         
         st.divider()
+        col1, col2, col3 = st.columns([0.5, 0.3, 0.2], gap="large")
+        with col1:
+            st.caption("Year of Birth of KMN Artists, by Decade.") 
+
+            # show missing values for year of birth
+            kmn_dob = kmn[kmn['Year of Birth'].notnull()]
+
+            # most values are integers, but some are strings i.e., '1887 or 1885'
+            kmn_dob['Year of Birth'] = kmn_dob['Year of Birth'].str.extract(r'(\d{4})').astype(int)
+
+            fig, ax = plt.subplots(figsize=(16, 6))
+            # bar plot of year of birth in decade buckets
+            bins = np.arange(1820, 2030, 10)
+            n, bins, patches = ax.hist(kmn_dob['Year of Birth'], bins=bins, edgecolor='white')
+
+            # Add labels to the bars
+            for patch in patches:
+                height = patch.get_height()
+                ax.text(patch.get_x() + patch.get_width() / 2, height + 1, int(height), ha='center', va='bottom')
+            
+            # Set x-axis ticks to show every 20 years
+            ax.set_xticks(np.arange(1820, 2040, 20))
+            ax.set_ylim(0, max(n) + 5)
+
+            ax.set_title("")
+            ax.set_xlabel("Year of Birth")
+            ax.set_ylabel("Number of Artists")
+
+            st.pyplot(fig)
+            st.caption("*Note that this excludes artists with missing values for year of birth i.e., Ken Family Collaborative.*") 
+
+        with col2:
+            st.caption("Year of Birth, Oldest and Youngest.")
+            oldest_year = kmn_dob['Year of Birth'].min()
+            youngest_year = kmn_dob['Year of Birth'].max()
+            old_val = kmn_dob[kmn_dob['Year of Birth'] == oldest_year]['Artist'].values[0]
+            young_val = kmn_dob[kmn_dob['Year of Birth'] == youngest_year]['Artist'].values[0]
+            st.metric(value=old_val, label=str(oldest_year))
+            st.write(" ")
+            st.write(" ")
+            st.write(" ")
+            st.metric(value=young_val, label=str(youngest_year))
+            
+        with col3:
+            st.caption("Proportion of artists still living.")
+            kmn["Alive"] = kmn['Year of Death'] == 'N/A (Still Living)'
+            
+            fig, ax = plt.subplots()
+            kmn["Alive"].value_counts().plot.pie(autopct='%1.1f%%', ax=ax, labels=['Alive', 'Deceased'])
+            ax.set_ylabel("")
+            ax.set_xlabel("")
+            st.pyplot(fig)
+
+        st.divider()
         st.caption("Some basic visual overviews of the KMN dataset (where each artist in the collection comes from)")
-        kmn = fetch_kmn_data()
         col1, col2, col3 = st.columns([1, 1, 3])
 
         with col2:

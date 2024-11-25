@@ -12,12 +12,15 @@ def fetch_daao_kmn_data():
     return pd.read_csv("data/daao_kmn_individuals.csv")
 
 def fetch_daao_kmn_related_people_records():
-    kmn_frame = fetch_kmn_data()
-    daao_frame = fetch_daao_kmn_data()
-    daao_related_people = fetch_daao_kmn_related_people()
+    kmn_frame = fetch_kmn_data() # KMN data
+    daao_frame = fetch_daao_kmn_data() # DAAO data of KMN artists
+    daao_related_people = fetch_daao_kmn_related_people() # related people according to DAAO, n=593
+
+    # identify KMN artists with related people, n=142
     frame_related_people = kmn_frame[kmn_frame.related_people.notnull()]
     kmn_daao_links = frame_related_people[frame_related_people.related_people != 0]["Link to DAAO"].tolist()
 
+    # for each KMN-DAAO match, fetch related people data
     related_records = pd.DataFrame()
     for daao_link in kmn_daao_links:
         this_artist = daao_frame[daao_frame["Link to DAAO"] == daao_link].iloc[0]
@@ -44,10 +47,12 @@ def fetch_daao_kmn_related_people_records():
     daao_related_people_gender["ori_dbid"] = daao_related_people_gender["ori_dbid"]\
         .apply(lambda x: ast.literal_eval(x)["$oid"])
 
+    # append gender information to related records
     related_records = related_records.merge(daao_related_people_gender, left_on='related_person_oid', right_on='ori_dbid', how='inner')
     return related_records.drop(columns=['ori_dbid'])
 
 def fetch_daao_kmn_related_people():
+    '''Fetch DAAO data of related people (according to DAAO) to KMN artists'''
     return pd.read_csv("data/daao_kmn_related_persons.csv")
 
 def fetch_archibald_participant_data(filter=None):

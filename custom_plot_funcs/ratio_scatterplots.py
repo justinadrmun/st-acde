@@ -99,12 +99,15 @@ def plot_female_relations(more_than_double_female_relations):
         else:
             annotations[i] = ('tab:orange', 'left')
     
+    RATIO_ANNOTATIONS_FEMALE = RATIO_ANNOTATIONS.copy()
+    RATIO_ANNOTATIONS_FEMALE[0.66] = '2x more \nfemale than male \nrelations in the DAAO'
+
     create_scatter_plot(
         df=more_than_double_female_relations,
         x_col='"female"_proportion',
         y_col='All',
         annotations=annotations,
-        proportions=RATIO_ANNOTATIONS,
+        proportions=RATIO_ANNOTATIONS_FEMALE,
         xlabel='Proportion of female relations',
         ylabel='Total relations',
         x_limits=(0.55, 1.05),

@@ -1,0 +1,84 @@
+        "Rearranged Names",  # Nyukana Baker -> Baker Nyukana
+        "Extended/Shortened Name",  # Clarice Beckett -> Clarice Marjoribanks Beckett
+        "Extended/Shortened Name",  # Dorrit Black -> Dorothea Foster Black
+        "Other",  # Stella Bowen -> Esther Gwendolyn Bowen
+        "Extended/Shortened Name",  # Jean Broome-Norton -> Isabel Jean Broome
+        "Surname Change",  # Frances Phoenix -> Frances Budden
+        "Extended/Shortened Name",  # Ethel Carrick Fox -> E. Carrick Fox
+        "Surname Change",  # Dora Cecil Chapman -> Dora Cant
+        "Extended/Shortened Name",  # Ola Cohn -> Carola Cohn
+        "Extended/Shortened Name",  # Olive Cotton -> Olive Edith Cotton
+        "Extended/Shortened Name",  # Grace Crowley -> Grace Adela Williams Crowley
+        "Other",  # Annie Garvin Dangar -> Nancy Dangar
+        "Extended/Shortened Name",  # Bessie Davidson -> Bessie Ellen Davidson
+        "Extended/Shortened Name",  # Pamela Elizabeth Debenham -> Pam Debenham
+        "Extended/Shortened Name",  # Mirdidingkingathi Juwarnda Sally Gabori -> Sally Gabori
+        "Extended/Shortened Name",  # Agnes Goodsir -> Agnes Noyes Goodsir
+        "Extended/Shortened Name",  # Marion Griffin -> Marion Mahony Griffin
+        "Surname Change",  # Mona Hessing -> Mona Johnston
+        "Extended/Shortened Name",  # Joy Hester -> Joy St Clair Hester
+        "Surname Change",  # Margel Ina Hinder -> Margel Ina Harris
+        "Surname Change",  # Mirka Madeleine Mora -> Mirka Madeleine Zelik
+        "Extended/Shortened Name",  # Vida Lahey -> Frances Vida Lahey
+        "Other",  # Pat Larter -> Holmes
+        "Surname Change",  # Margo Lewers -> Margo Plate
+        "Surname Change",  # Rosemary Wynnis Madigan -> Rosemary Wynnis Giles
+        "Extended/Shortened Name",  # Marguerite Henriette Mahood -> Margot Mahood
+        "Extended/Shortened Name",  # Erica McGilchrist -> Erica Margaret McGilchrist
+        "Extended/Shortened Name",  # Ann Foster Newmarch -> Ann Newmarch
+        "Extended/Shortened Name",  # Bess Norriss Tait -> Elizabeth May Norriss Tait
+        "Extended/Shortened Name",  # Margaret Olley -> Margaret Hannah Olley
+        "Extended/Shortened Name",  # Adelaide Perry -> Adelaide Elizabeth Perry
+        "Extended/Shortened Name",  # Margaret Preston -> Margaret Rose Preston
+        "Extended/Shortened Name",  # Thea Proctor -> Alethea Mary Proctor
+        "Typographical Variation",  # Angelina Nala Pwerle -> Angelina Nangala Pwerle
+        "Other",  # Hilda Rix Nicholas -> Emily Hilder Wright
+        "Extended/Shortened Name",  # Freda Rhoda Robertshaw -> Freda Robertshaw
+        "Extended/Shortened Name",  # Grace Cossington Smith -> Grace Smith
+        "Surname Change",  # Constance Stokes -> Constance Parkin
+        "Extended/Shortened Name",  # Violet Teague -> Violet Helen Evangeline Teague
+        "Surname Change",  # Esme Timbery -> Esme Russell
+        "Extended/Shortened Name",  # Jessie Traill -> Jessie Constance Alicia Traill
+        "Extended/Shortened Name",  # Barbara Tribe -> Rhonda Barbara Tribe
+        "Extended/Shortened Name",  # Christian Waller -> Christian Marjory Emily Carlyle Waller
+        "Surname Change",  # Ada Whiting -> Ada Cherry
+        "Other",  # Thanakupi -> Gloria James Fletcher
+        "Typographical Variation",  # Janet Laurence -> Janet Lawrence
+        "Surname Change",  # Corrie Fullard -> Corrie Mansell
+        "Extended/Shortened Name",  # Gwyn Hanssen Pigott -> Gwyn Hanssen
+        "Other",  # Linda Jackson -> Opalinda
+        "Surname Change",  # Julie Rrap -> Julie Brown-Rrap
+        "Surname Change",  # Patricia Englund -> Patricia Burge
+        "Surname Change",  # Mary Featherston -> Mary Curry
+        "Extended/Shortened Name",  # Florence Broadhurst -> Florence Maude Broadhurst
+        "Extended/Shortened Name",  # Joan Brassil -> Rita Joan Brassil
+        "Surname Change",  # Pat Brassington -> Patricia Trayling
+        "Typographical Variation",  # Jan Mackay -> Jan McKay
+        "Extended/Shortened Name",  # Miriam Stannage -> Miriam Helen Stannage
+        "Spacing",  # Elise Margo Blumann -> Elise Margo  Blumann
+        "Typographical Variation",  # Ewa Pachucka -> Ewa Pachuka
+        "Extended/Shortened Name",  # Rea -> Rea Noir
+        "Other",  # Jenny Christmann -> Hannelore Bangert
+        "Typographical Variation",  # Nongirrna Marawili -> Nonggirrnga  Marawili
+        "Extended/Shortened Name",  # Kathleen O’Connor -> Kathleen Laetitia  O'Connor
+        "Extended/Shortened Name",  # Rosie Kngwarray -> Rosie Kngwarray Kunoth
+        "Surname Change",  # Jean Broome-Norton -> Jean Broome
+        "Extended/Shortened Name",  # Ethel Carrick Fox -> Carrick
+        "Extended/Shortened Name",  # Annie Garvin Dangar -> Anne Dangar
+        "Surname Change",  # Marion Griffin -> Marion Lucy Mahony
+        "Extended/Shortened Name",  # Mirka Madeleine Mora -> Mirka Mora
+        "Extended/Shortened Name",  # Margo Lewers -> Henrietta Margaret Ernestine Lewers
+        "Extended/Shortened Name",  # Rosemary Wynnis Madigan -> Rosemary Madigan
+        "Surname Change",  # Marguerite Henriette Mahood -> Marguerite Henriette Callaway
+        "Other",  # Margaret Preston -> Rose McPherson
+        "Extended/Shortened Name",  # Hilda Rix Nicholas -> Emily Hilda Nicholas
+        "Extended/Shortened Name",  # Constance Stokes -> Connie Stokes
+        "Surname Change",  # Christian Waller -> Christian Marjory Emily Carlyle Yandell
+        "Typographical Variation",  # Thanakupi -> Thancoupie
+        "Typographical Variation",  # Ewa Pachucka -> Ewa Pachuchka
+        "Extended/Shortened Name",  # Ethel Carrick Fox -> Ethel Carrick
+        "Surname Change",  # Margaret Preston -> Margaret Rose Macpherson
+        "Extended/Shortened Name",  # Hilda Rix Nicholas -> Hilda Rix
+        "Surname Change",  # Christian Waller -> Christian Yandell
+        "Surname Change",  # Margaret Preston -> Margaret Rose McPherson
+        "Surname Change"   # Margaret Preston -> Margaret Macpherson

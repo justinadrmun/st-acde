@@ -11,6 +11,44 @@ def fetch_kmn_data():
 def fetch_daao_kmn_data():
     return pd.read_csv("data/daao_kmn_individuals.csv")
 
+def fetch_daao_kmn_alt_names():
+    daao_frame = fetch_daao_kmn_data()
+    alt_names = daao_frame[daao_frame["alternative_names"].notnull()][
+        ["display_name", "primary_name", "alternative_names"]]
+    
+    alt_names_dict = dict()
+    for _, alt_name in alt_names.iterrows():
+        daao_name = alt_name.display_name.replace('"', '')
+        a = ast.literal_eval(alt_name.alternative_names)
+        alt_names_dict[daao_name] = []
+        for display_name in a:
+            if daao_name.strip() == display_name["display_name"].strip():
+                continue
+            alt_names_dict[daao_name].append(display_name["display_name"])
+
+    # create a dataframe from alt_names_dict
+    alt_names_frame = pd.DataFrame.from_dict( alt_names_dict, orient='index')\
+            .reset_index()\
+            .melt(id_vars='index', value_name='alternative_names')\
+            .dropna()[["index","alternative_names"]]\
+            .rename(columns={'index': 'display_name'})
+    
+    manual_categories = []
+    with open('data/manual_alt_name_cats.txt', 'r') as f:
+        [manual_categories.append(
+            line.split('#')[0]\
+                .replace('"', '')\
+                .replace(',', '')\
+                .strip()) 
+                for line in f]
+        
+    alt_names_frame["category"] = manual_categories
+
+    # remove Rearranged Names and Spacing
+    alt_names_frame = alt_names_frame[~alt_names_frame["category"].isin(
+        ["Rearranged Names", "Spacing"])]
+    return alt_names_frame
+
 def fetch_daao_kmn_related_people_records():
     kmn_frame = fetch_kmn_data() # KMN data
     daao_frame = fetch_daao_kmn_data() # DAAO data of KMN artists

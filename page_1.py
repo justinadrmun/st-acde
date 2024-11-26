@@ -221,8 +221,6 @@ def generate_tab4(params):
         ax.set_title("")
         ax.set_xlabel("\nYear of birth of KMN artist (n = number of relations)")
         ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=2)
-
-        # change x-axis labels to include the sum of each vicennium year in the format 1820 (n=5)
         ax.set_xticklabels(
                 [f"{int(year)} \n(n={int(summary[summary['vicennium_birth_year'] == year]["All"].sum())})" 
                  for year in by_birth_year.index])

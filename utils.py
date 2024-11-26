@@ -170,6 +170,8 @@ def fetch_plot_data_for_archie_timeline():
     artist_df = artist_df.sort_values(by='First Year', ascending=True).drop(columns='First Year')
     return pd.concat([artist_df, pd.DataFrame(columns=range(artist_df.columns[-1]+1, 102))], axis=1)
 
+def fetch_daao_austlist_works():
+    return pd.read_csv('data/daao_austlit_works.csv')
 
 def center_figure(plot_func, *args, **kwargs):
     _, col2, _ = st.columns([1, 5, 1])

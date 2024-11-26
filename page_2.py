@@ -4,7 +4,7 @@ from utils import fetch_daao_kmn_alt_names
 from custom_plot_funcs.custom_legend_barplot import plot_alternative_names
 
 def generate_tab1():
-        st.markdown("""
+        st.caption("""
                     - A visualization of women in the KMN group who have changed their names at some 
                     point, either before or after the exhibition or over the course of their careers  
                     - Names as they appear differently in different collections/databases?
@@ -16,7 +16,6 @@ def generate_tab1():
         st.write("KMN artists in the DAAO with alternative names")
 
         cols = st.columns([1, 1, 2])
-        alt_names_cats = alt_names_frame.category.unique()
         with cols[0]:
                 st.metric("Number of KMN artists with alternative names", 
                         alt_names_frame.display_name.nunique())
@@ -37,7 +36,7 @@ def generate_tab1():
                 plot_alternative_names()
 
 def generate_tab2():
-        st.markdown("""
+        st.caption("""
                     - Married names, gender neutral names, Indigenous names, (e.g. the Knagwareye controversy), fabricated or pseudonyms 
                     """
         )

@@ -231,7 +231,7 @@ def generate_tab4(params):
                      
         
 def generate_tab5(params):
-        st.markdown("""
+        st.caption("""
                  - Compare with data from Australia exhibition at Royal Academy in 2013 
                  - Rex Butler – decrying the lack of artistic judgment that data-driven/metric-based merit shows have on the discipline of art history 
                  - What happens when you datafy (or reverse engineer as data) an exhibition that happened in situ?

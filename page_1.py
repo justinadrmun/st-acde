@@ -6,11 +6,13 @@ from utils import (
         fetch_kmn_data, 
         fetch_archibald_participant_data,
         fetch_daao_kmn_related_people_records,
-        fetch_daao_kmn_related_people
+        fetch_daao_kmn_related_people,
+        inspect_data
 )
 from custom_plot_funcs.archies_timeline import plot_timeline
 from custom_plot_funcs.ratio_scatterplots import plot_male_relations, plot_female_relations
 
+######## DAAO Intersection Overview ########
 def generate_tab1(params):
         st.caption("""
                  Some kind of visualisation showing the ‘Top 10’ artists in the collection by way of how ‘visible’ 
@@ -29,9 +31,16 @@ def generate_tab1(params):
                         st.metric(value="", label=artist)
 
         st.divider()
-        st.write(f"**KMN artists with DAAO relations:**")
         frame = params['frame']
         frame = frame[frame["Collective/Individual"] == "Individual"]
+        at_least_one_relation_sum = frame[frame['related_events'].notnull() | 
+                                               frame['related_people'].notnull() | 
+                                               frame['related_places'].notnull() | 
+                                               frame['related_recognitions'].notnull() | 
+                                               frame['related_resources'].notnull() | 
+                                               frame['related_works'].notnull()].shape[0]
+
+        st.write(f"**KMN (individual) artists with DAAO relations (n={at_least_one_relation_sum}):**")
 
         categories = [
         ("Most related event records", 'related_events'),
@@ -51,6 +60,7 @@ def generate_tab1(params):
                                              .sort_values(by=column, ascending=False)
                                              .head(10).set_index('Artist'), horizontal=True)
 
+######## Selected 5 artists ########
 def generate_tab2(params):
         st.write("""
                 Some kind of visualisation where we have, say, 5 artists from the KMN collection, with a 
@@ -59,6 +69,7 @@ def generate_tab2(params):
                  """
         )
 
+######## Archibald ########
 def generate_tab3(params):
         st.caption("""
                  KMN meets Archibald – data viz overview. Show women in the Archibald who also feature in KMN.
@@ -79,11 +90,15 @@ def generate_tab3(params):
                                 st.metric(label=str(row["Year"]), value=row["KMN Artist"])
                                 st.image(f"images/archies_{str(row['Year'])}.jpg", caption=row["Title"])
         st.divider()
-        st.write(f"**KMN Artists who have participated in the Archibald Prize:**")
-        _, col2, _ = st.columns([1, 5, 1])
-        with col2:
+        st.write(f"**KMN Artists who have participated in the Archibald Prize (n={found_participants.found.nunique()}):**")
+        cols = st.columns([1, 5, 1])
+        with cols[1]:
                 plot_timeline()
-
+        with cols[0]:
+                if st.button("Inspect data :mag_right:", key="archibald"):
+                        inspect_data(found_participants)
+        
+######## DAAO Relation Deep Dive ########
 def generate_tab4(params):
         st.caption("""
                  Data imagery – who is included/ relationship to DAAO, gender differences, geographic spread, date range for birth of subjects?
@@ -93,13 +108,19 @@ def generate_tab4(params):
         columns = st.columns([0.7, 0.3])
 
         with columns[0]:
-                st.write("**Predicate type of DAAO people relations**")
                 related_records = fetch_daao_kmn_related_people_records()
+                st.write(f"**Predicate type of DAAO people relations (n={related_records.shape[0]}):**")
+                st.caption("Predicate types are the types of relationships between a given KMN artist and related person in the DAAO.")
+                if st.button("Inspect data :mag_right:", key="daao_relations"):
+                        inspect_data(related_records)  
                 st.bar_chart(related_records["predicate"].value_counts(), horizontal=True)
                 
         with columns[1]:
-                st.write("**Gender distribution of DAAO related people**")
                 daao_related_people = fetch_daao_kmn_related_people()
+                st.write(f"**Gender distribution of DAAO related people (n={daao_related_people.shape[0]}):**")
+                st.caption("This data consists of all the people records in the DAAO who are related to KMN artists.")
+                if st.button("Inspect data :mag_right:", key="daao_related_people"):
+                        inspect_data(daao_related_people)  
 
                 fig, ax = plt.subplots()
                 daao_related_people["gender"].value_counts().plot.pie(autopct='%1.1f%%', ax=ax)
@@ -123,7 +144,7 @@ def generate_tab4(params):
         summary['Year of Birth'] = summary['Year of Birth'].str.extract(r'(\d{4})').astype(int)
 
         # create a vicennium birth year column
-        summary["vicennium_birth_year"] = (summary["Year of Birth"] // 20) * 20
+        summary["decade_birth_year"] = (summary["Year of Birth"] // 10) * 10
 
         columns = st.columns(3)
         with columns[0]:
@@ -163,6 +184,7 @@ def generate_tab4(params):
                 # increase y limits 
                 ax.set_ylim(0, 50)
                 st.pyplot(fig)
+                st.caption("18% of KMN artists (found in the DAAO) have 10 or more links with other people in the DAAO.")
         
         with columns[2]:
                 mean_proportions = summary.groupby('Bin')[['"male"_proportion', '"female"_proportion']].mean()\
@@ -187,45 +209,63 @@ def generate_tab4(params):
                 # move legend to the top of the plot
                 ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.1), ncol=2)
                 st.pyplot(fig)
+                st.caption("Most links with other people in the DAAO are female.")
 
         st.divider()
-        columns = st.columns(2)
-        with columns[0]:
+        columns = st.columns([0.3,1,1])
+        with columns[1]:
                 st.write("**KMN artists with more than double male relations in the DAAO**")
                 more_than_double_male_relations = summary[(summary['"male"_proportion'] > 0.66) & 
                                                         (summary['All'] > 4)]\
                                                 .sort_values(by='"male"_proportion', ascending=False)\
                                                 .reset_index(drop=True)
                 plot_male_relations(more_than_double_male_relations)
-        with columns[1]:
+        with columns[2]:
                 st.write("**KMN artists with more than double female relations in the DAAO**")
                 more_than_double_female_relations = summary[(summary['"female"_proportion'] > 0.66) & 
                                                 (summary['All'] > 4)]\
                                         .sort_values(by='"female"_proportion', ascending=False)\
                                         .reset_index(drop=True)
-                plot_female_relations(more_than_double_female_relations)            
+                plot_female_relations(more_than_double_female_relations)    
+        with columns[0]:
+                if st.button("Inspect data :mag_right:", key="daao"):
+                        inspect_data(summary)  
                  
         st.divider()
         st.write("**Gender relation proportions over time**")
-        by_birth_year = summary.groupby("vicennium_birth_year")[['"male"_proportion','"female"_proportion']].mean()
+        st.caption('''
+                   This plot checks to see whether the proportion of related records in the DAAO is changing over time.
+                   For example, has there been a shift in the type of networks over time?
+
+                   We use date of birth as a proxy for time, as this is the most populated data in the dataset. However,
+                   this is not an accurate measure of artist activity.
+                   '''
+        )
+                   
+        by_birth_year = summary.groupby("decade_birth_year")[['"male"_proportion','"female"_proportion']].mean()
         by_birth_year.rename(columns={'"male"_proportion': "Average male proportion",
                                       '"female"_proportion': "Average female proportion",
                                           }, inplace=True)
         # remove the first row
-        by_birth_year2 = by_birth_year.iloc[1:]
+        by_birth_year2 = by_birth_year
+        # by_birth_year2 = by_birth_year.iloc[1:]
 
-        fig, ax = plt.subplots(figsize=(10, 4))
+        fig, ax = plt.subplots(figsize=(16, 4))
+        ax.axhline(y=0.5, color='grey', linestyle='dashed', lw=2, alpha=0.5)
         # add line plot with markers
         by_birth_year2.plot(kind='line', ax=ax, rot=0, color=['tab:orange', 'tab:blue'], marker='o')
       
         ax.set_title("")
         ax.set_xlabel("\nYear of birth of KMN artist (n = number of relations)")
         ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=2)
+
+        # show each decade on the x-axis
+        ax.set_xticks(by_birth_year2.index)
         ax.set_xticklabels(
-                [f"{int(year)} \n(n={int(summary[summary['vicennium_birth_year'] == year]["All"].sum())})" 
+                [f"{int(year)} \n(n={int(summary[summary['decade_birth_year'] == year]["All"].sum())})" 
                  for year in by_birth_year.index])
                   
-        columns = st.columns([2.5, 1, 1])
+        columns = st.columns([2.5, 0.5])
         with columns[0]:
                 st.pyplot(fig)
                      

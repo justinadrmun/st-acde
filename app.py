@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-from utils import fetch_kmn_data
+from utils import fetch_kmn_data, inspect_data
 from dotenv import load_dotenv
 import os
 
@@ -89,10 +89,9 @@ if check_password():
                         - Significant missing values in columns like "First Nations People Group (from Know My Name only)" (243 missing), "Date of Birth" (157 missing), "Place of Death Latitude" (186 missing), and "Link to AWR" (261 missing).
             """
             )
-
-        st.caption("Snapshot of the last 5 rows of the dataset")
         kmn = fetch_kmn_data()
-        st.dataframe(kmn.tail())
+        if st.button("Inspect data :mag_right:"):
+                inspect_data(kmn)
         
         st.divider()
         col1, col2, col3 = st.columns([0.5, 0.3, 0.2], gap="large")

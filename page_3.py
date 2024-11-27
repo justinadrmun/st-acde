@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from utils import fetch_daao_austlist_works
+from utils import fetch_daao_austlist_works, inspect_data
 
 def generate_tab1():
         st.caption("""
@@ -56,6 +56,8 @@ def generate_tab1():
                 st.pyplot(fig)
         with cols[1]:
                 st.write("**Data defintions:**")
+                if st.button("Inspect data :mag_right:"):
+                        inspect_data(frame)
                 expander_labels = ["agentWorksBy", "agentWorksAbout", "agentWorksWorks", "AgentText_Awards"]
                 selection = st.segmented_control(
                         " ",

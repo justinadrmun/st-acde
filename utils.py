@@ -173,6 +173,11 @@ def fetch_plot_data_for_archie_timeline():
 def fetch_daao_austlist_works():
     return pd.read_csv('data/daao_austlit_works.csv')
 
+@st.dialog("Raw data", width="large")
+def inspect_data(frame):
+        st.write("")
+        st.dataframe(frame)
+        
 def center_figure(plot_func, *args, **kwargs):
     _, col2, _ = st.columns([1, 5, 1])
     with col2:

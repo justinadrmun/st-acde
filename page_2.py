@@ -1,6 +1,6 @@
 import streamlit as st
 
-from utils import fetch_daao_kmn_alt_names
+from utils import fetch_daao_kmn_alt_names, inspect_data
 from custom_plot_funcs.custom_legend_barplot import plot_alternative_names
 
 def generate_tab1():
@@ -13,7 +13,7 @@ def generate_tab1():
         )
         st.divider()
         alt_names_frame = fetch_daao_kmn_alt_names()
-        st.write("KMN artists in the DAAO with alternative names")
+        st.write("**KMN artists in the DAAO with alternative names**")
 
         cols = st.columns([1, 1, 2])
         with cols[0]:
@@ -26,14 +26,16 @@ def generate_tab1():
                         round(alt_names_frame.shape[0]/alt_names_frame.display_name.nunique(), 2))
                      
         with cols[2]:
-                st.write("Alternative name categories")
+                st.write("**Alternative name categories**")
                 st.bar_chart(alt_names_frame.category.value_counts(), horizontal=True)
         st.divider()
+        st.write("**KMN artists who have more than one alternative name in the DAAO**")
+        if st.button("Inspect data :mag_right:"):
+                inspect_data(alt_names_frame)
         cols = st.columns([3, 1, 1])
-
         with cols[0]:
-                st.write("KMN artists who have more than one alternative name in the DAAO")
                 plot_alternative_names()
+
 
 def generate_tab2():
         st.caption("""

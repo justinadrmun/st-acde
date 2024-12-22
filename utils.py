@@ -93,6 +93,12 @@ def fetch_daao_kmn_related_people():
     '''Fetch DAAO data of related people (according to DAAO) to KMN artists'''
     return pd.read_csv("data/daao_kmn_related_persons.csv")
 
+def fetch_daao_kmn_related_people_withcount():
+    return pd.read_csv("data/daao_kmn_related_people_withcount.csv")
+
+def fetch_daao_recognised_individuals():
+    return pd.read_csv("data/daao_recognised_individuals.csv")
+
 def fetch_archibald_participant_data(filter=None):
     warnings.filterwarnings("ignore")
     if filter == "kmn":

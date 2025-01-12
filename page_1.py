@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -62,12 +63,101 @@ def generate_tab1(params):
 
 ######## Selected 5 artists ########
 def generate_tab2(params):
-        st.write("""
+        st.caption("""
                 Some kind of visualisation where we have, say, 5 artists from the KMN collection, with a 
                 little panel of 5 items of metadata about them (a line could then link out to a photograph 
                 of one of their exhibition artworks)
                  """
         )
+        frame = params['frame']
+
+        pg1_columns = st.columns(3)
+        with pg1_columns[0]:
+                st.subheader("Marion Borgelt")
+                st.caption("Most related recognition records in KMN dataset.")
+                individual1 = frame[frame.Artist.str.contains("Borgelt")]
+                url = individual1['Link to DAAO'].values[0]
+                kmn_url = "https://nga.gov.au/knowmyname/artists/marion-borgelt/"
+                ind1 = st.columns(2)
+                with ind1[0]:
+                        st.caption("[DAAO Profile](%s)" % url)
+                        st.metric("Place of birth",f"{individual1['Place of Birth (Anglophone)'].values[0]}")
+                with ind1[1]:
+                        st.caption("[Link to KMN](%s)" % kmn_url)
+                        st.metric("Year of Birth",f"{individual1['Year of Birth'].values[0]}")
+                
+                st.write(f"**No. of related records in DAAO**: {int(individual1.related_total_count.values[0])}")
+
+        with pg1_columns[1]:
+                st.subheader("Simryn Gill")
+                st.caption("Participated in 10 international exhibitions in 10 unique countries.")
+                individual2 = frame[frame.Artist.str.contains("Simryn")]
+                url = individual2['Link to DAAO'].values[0]
+                kmn_url = "https://nga.gov.au/knowmyname/artists/simryn-gill/"
+                ind2 = st.columns(2)
+                with ind2[0]:
+                        st.caption("[DAAO Profile](%s)" % url)
+                        st.metric("Place of birth",f"{individual2['Place of Birth (Anglophone)'].values[0]}")
+                with ind2[1]:
+                        st.caption("[Link to KMN](%s)" % kmn_url)
+                        st.metric("Year of Birth",f"{individual2['Year of Birth'].values[0]}")
+                st.write(f"**No. of related records in DAAO**: {int(individual2.related_total_count.values[0])}")
+
+        with pg1_columns[2]:
+                st.subheader("Julie Dowling")
+                st.caption("Artist with various data points in Austlit.")
+                individual3 = frame[frame.Artist.str.contains("Dowling")]
+                url = individual3['Link to DAAO'].values[0]
+                kmn_url = "https://nga.gov.au/knowmyname/artists/julie-dowling/"
+                ind3 = st.columns(2)
+                with ind3[0]:
+                        st.caption("[DAAO Profile](%s)" % url)
+                        st.metric("Place of birth",f"{individual3['Place of Birth (Anglophone)'].values[0]}")
+                with ind3[1]:
+                        st.caption("[Link to KMN](%s)" % kmn_url)
+                        st.metric("Year of Birth",f"{individual3['Year of Birth'].values[0]}")
+                st.write(f"**No. of related records in DAAO**: {int(individual3.related_total_count.values[0])}")
+        
+        st.divider()
+        pg1_columns2 = st.columns(3)
+        with pg1_columns2[0]:
+                st.subheader("Yvette Coppersmith")
+                st.caption("Last female artist to win the Archibald Prize.")
+                individual4 = frame[frame.Artist.str.contains("Coppersmith")]
+                url = individual4['Link to DAAO'].values[0]
+                kmn_url = "https://nga.gov.au/knowmyname/artists/yvette-coppersmith/"
+                ind4 = st.columns(2)
+                with ind4[0]:
+                        st.caption("[DAAO Profile](%s)" % url)
+                        st.metric("Place of birth",f"{individual4['Place of Birth (Anglophone)'].values[0]}")
+                with ind4[1]:
+                        st.caption("[Link to KMN](%s)" % kmn_url)
+                        st.metric("Year of Birth",f"{individual4['Year of Birth'].values[0]}")
+                st.write(f"**No. of related records in DAAO**: {int(individual4.related_total_count.values[0])}")
+
+        with pg1_columns2[1]:
+                st.subheader("Ethel Carrick")
+                st.caption("Artist with three alternative names in the DAAO.")
+                individual5 = frame[frame.Artist.str.contains("Carrick")]
+                url = individual5['Link to DAAO'].values[0]
+                kmn_url = "https://nga.gov.au/knowmyname/artists/ethel-carrick/"
+                ind5 = st.columns(2)
+                with ind5[0]:
+                        st.caption("[DAAO Profile](%s)" % url)
+                        st.metric("Place of birth",f"{individual5["Place of Birth (Anglophone)"].values[0]}, {individual5["Country of Birth"].values[0]}")
+                with ind5[1]:
+                        st.caption("[Link to KMN](%s)" % kmn_url)
+                        st.metric("Year of Birth",f"{individual5['Year of Birth'].values[0]}")
+                st.write(f"**No. of related records in DAAO**: {int(individual5.related_total_count.values[0])}")
+        st.divider()
+        google_trends = """
+                        <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3940_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/0412tn9","geo":"AU","time":"2004-01-01 2025-01-12"},{"keyword":"/m/03q7j1j","geo":"AU","time":"2004-01-01 2025-01-12"},{"keyword":"/g/11f_1l__xk","geo":"AU","time":"2004-01-01 2025-01-12"},{"keyword":"/m/0glsbd9","geo":"AU","time":"2004-01-01 2025-01-12"},{"keyword":"/g/11g0gdjbv3","geo":"AU","time":"2004-01-01 2025-01-12"}],"category":0,"property":""}, {"exploreQuery":"date=all&geo=AU&q=%2Fm%2F0412tn9,%2Fm%2F03q7j1j,%2Fg%2F11f_1l__xk,%2Fm%2F0glsbd9,%2Fg%2F11g0gdjbv3&hl=en-US","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>
+                    """
+        st.subheader("Google Trends data for selected KMN artists")
+        st.write("Data is sourced from Google Trends and shows the relative search interest for the selected artists in Australia from 2004 to 2025.")
+        st.components.v1.html(google_trends, height=600)
+
+
 
 ######## Archibald ########
 def generate_tab3(params):

@@ -179,6 +179,9 @@ def fetch_plot_data_for_archie_timeline():
 def fetch_daao_austlist_works():
     return pd.read_csv('data/daao_austlit_works.csv')
 
+def fetch_kmn_artists_exhibitions():
+    return pd.read_csv("data/kmn_artists_exhibitions.csv")
+
 @st.dialog("Raw data", width="large")
 def inspect_data(frame):
         st.write("")

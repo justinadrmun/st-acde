@@ -211,43 +211,56 @@ def generate_tab3():
         st.write("Analysing summary statistics of the number of exhibitions (DAAO) in countries other than Australia")
                  
         # find the artists with the higher count the number of non-Australian countries of the column : place.address.country
-        international_mobilities = kmn_artists_exhibitions[["artist","place.address.country"]][kmn_artists_exhibitions["place.address.country"].notnull()]
+        international_mobilities_count = kmn_artists_exhibitions[["artist","place.address.country"]][kmn_artists_exhibitions["place.address.country"].notnull()]
+        international_mobilities_frame = kmn_artists_exhibitions[["artist","place.address.country"]][kmn_artists_exhibitions["place.address.country"].notnull()]
 
         # create new Australia indicator column
-        international_mobilities["is_international"] = np.where(international_mobilities["place.address.country"] != "Australia", 1, 0)
-        international_mobilities["is_local"] = np.where(international_mobilities["place.address.country"] == "Australia", 1, 0)        
+        international_mobilities_count["is_international"] = np.where(international_mobilities_count["place.address.country"] != "Australia", 1, 0)
+        international_mobilities_count["is_local"] = np.where(international_mobilities_count["place.address.country"] == "Australia", 1, 0)        
 
         # group by artist and count the number of unique countries
-        international_mobilities = international_mobilities.groupby("artist")\
+        international_mobilities_count = international_mobilities_count.groupby("artist")\
         .agg({"place.address.country": "nunique", "is_international": "sum", "is_local": "sum"})\
         .reset_index()\
         .rename(columns={"place.address.country": "no_of_countries", "is_international": "is_international", "is_local": "is_local"})
         
         # add percentage column of is_international to is_international + is_local
-        international_mobilities["countries_%"] = round(
-                (international_mobilities["is_international"] / (international_mobilities["is_international"] + international_mobilities["is_local"])) * 100, 2)
+        international_mobilities_count["countries_%"] = round(
+                (international_mobilities_count["is_international"] / (international_mobilities_count["is_international"] + international_mobilities_count["is_local"])) * 100, 2)
         
-        international_mobilities["no_of_countries"] = international_mobilities["no_of_countries"] - 1
+        international_mobilities_count["no_of_countries"] = international_mobilities_count["no_of_countries"] - 1
 
         # rearrange columns
-        international_mobilities = international_mobilities[["artist", "is_international", "no_of_countries","countries_%"]]
-        international_mobilities.columns = [
-                "KMN Artist", "No. of international exhibitions", "No. of unique international countries", "% of international to total exhibition participations"]
+        international_mobilities_count = international_mobilities_count[["artist", "is_international", "no_of_countries","countries_%"]]
+
+        # international_mobilities_count contains the number of international exhibitions, number of unique international countries, percentage of international to total exhibition participations
+        # it is missing a unique list of participated countries for each artist
+        # create a new column in international_mobilities_count with the list of countries, must be a list
+        international_mobilities_count["Countries"] = international_mobilities_count["artist"].apply(
+                lambda x: international_mobilities_frame[international_mobilities_frame["artist"] == x]["place.address.country"].unique().tolist()
+        )
+
+        # remove Australia from the list of countries
+        international_mobilities_count["Countries"] = international_mobilities_count["Countries"].apply(
+                lambda x: [i for i in x if i != "Australia"]
+        )
+
+        international_mobilities_count.columns = [
+                "KMN Artist", "No. of international exhibitions", "No. countries", "% of international to total exhibition participations","Countries"
+        ]
+        international_mobilities_count = international_mobilities_count[[ "KMN Artist", "No. of international exhibitions", "Countries","% of international to total exhibition participations"]]
         numRows = 15
 
-        # let user choose columns to display
-        cols_to_select = international_mobilities.columns[1:]
-
         column_config_dict = {}
-        for cols in international_mobilities.columns[1:]:
+        for cols in ["No. of international exhibitions", "% of international to total exhibition participations"]:
                 column_config_dict[cols] = st.column_config.ProgressColumn(
                         cols,
                         format="%s",
                         min_value=0,
-                        max_value=int(international_mobilities[cols].max()) if isinstance(international_mobilities[cols], int) else 100
+                        max_value=int(international_mobilities_count[cols].max()) if isinstance(international_mobilities_count[cols], int) else 100
                 )
         
-        st.dataframe(international_mobilities.sort_values("% of international to total exhibition participations", ascending=False),
+        st.dataframe(international_mobilities_count.sort_values("% of international to total exhibition participations", ascending=False),
                         hide_index=True,
                         use_container_width=True,
                         height=(numRows + 1) * 35 + 3,
@@ -256,7 +269,6 @@ def generate_tab3():
 
         st.divider()
         st.write("International exhibition participation by continent")
-        international_mobilities_frame = kmn_artists_exhibitions[["artist","place.address.country"]][kmn_artists_exhibitions["place.address.country"].notnull()]
         international_mobilities_frame["continent"] = international_mobilities_frame["place.address.country"].apply(lambda x: country_to_continent(x))
         international_mobilities_frame = international_mobilities_frame[international_mobilities_frame["place.address.country"] != "Australia"]
         st.bar_chart(international_mobilities_frame["continent"].value_counts(), horizontal=True)

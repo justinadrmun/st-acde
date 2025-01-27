@@ -185,6 +185,9 @@ def fetch_kmn_artists_exhibitions():
 def fetch_google_trends_data():
     return pd.read_csv("data/google_trends_data.csv", skiprows=1)
 
+def fetch_george_gittoes_timeline_data():
+    return pd.read_csv("data/george_gittoes.csv")
+
 @st.dialog("Raw data", width="large")
 def inspect_data(frame):
         st.write("")

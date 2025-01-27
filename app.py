@@ -42,7 +42,7 @@ def check_password():
 
 if check_password():
     st.title("Know My Name")
-    options = ["Overview", "Exhibition", "Subjects", "Society", "Space", "Time"]
+    options = ["Overview", "Exhibition", "Subjects", "Society", "Space", "Time", "George Gittoes"]
     selection = st.segmented_control(
         "placeholder", options, selection_mode="single", default="Overview", label_visibility="hidden"
     )
@@ -189,3 +189,7 @@ if check_password():
     if selection == "Time":
         import page_5
         page_5.show()
+
+    if selection == "George Gittoes":
+        import page_6
+        page_6.show()

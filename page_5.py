@@ -65,6 +65,8 @@ def generate_tab1():
                  2. Using categorisation from [Scott East's list of 119 venues](%s), 
                         we identify major galleries as venues labelled as *National Institution* and *State Gallery / Library*.
                  """ % url)
+        st.warning("Please note that participation frequency in the visuals below are not filtered on events with dates, which differs with the analysis in the link above.",
+                   icon="⚠️")
         
         frame_cols = st.columns([2.25, 1])
         # determine height of dataframe based on number of rows
@@ -298,7 +300,9 @@ def generate_tab4():
                         4. We then count and visualise the number of major and regional gallery exhibition participations for each KMN artist.    
                 """
         )
-
+        st.warning("Please note that participation frequency in the visuals below are not filtered on events with dates, which differs with the analysis in the link above.",
+                   icon="⚠️")
+        
         # keep data where is_large_gallery is True or False, or is_regional_gallery is True or False
         major_vs_regional = kmn_artists_exhibitions[
                 (kmn_artists_exhibitions["is_large_gallery"]) | (kmn_artists_exhibitions["is_regional_gallery"])

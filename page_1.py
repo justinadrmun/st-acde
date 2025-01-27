@@ -8,6 +8,7 @@ from utils import (
         fetch_archibald_participant_data,
         fetch_daao_kmn_related_people_records,
         fetch_daao_kmn_related_people,
+        fetch_google_trends_data,
         inspect_data
 )
 from custom_plot_funcs.archies_timeline import plot_timeline
@@ -150,13 +151,12 @@ def generate_tab2(params):
                         st.metric("Year of Birth",f"{individual5['Year of Birth'].values[0]}")
                 st.write(f"**No. of related records in DAAO**: {int(individual5.related_total_count.values[0])}")
         st.divider()
-        google_trends = """
-                        <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3940_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/0412tn9","geo":"AU","time":"2004-01-01 2025-01-12"},{"keyword":"/m/03q7j1j","geo":"AU","time":"2004-01-01 2025-01-12"},{"keyword":"/g/11f_1l__xk","geo":"AU","time":"2004-01-01 2025-01-12"},{"keyword":"/m/0glsbd9","geo":"AU","time":"2004-01-01 2025-01-12"},{"keyword":"/g/11g0gdjbv3","geo":"AU","time":"2004-01-01 2025-01-12"}],"category":0,"property":""}, {"exploreQuery":"date=all&geo=AU&q=%2Fm%2F0412tn9,%2Fm%2F03q7j1j,%2Fg%2F11f_1l__xk,%2Fm%2F0glsbd9,%2Fg%2F11g0gdjbv3&hl=en-US","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>
-                    """
         st.subheader("Google Trends data for selected KMN artists")
         st.write("Data is sourced from Google Trends and shows the relative search interest for the selected artists in Australia from 2004 to 2025.")
-        st.components.v1.html(google_trends, height=600)
-
+        google_trends = fetch_google_trends_data()
+        google_trends.columns = [col.replace(": (Australia)", "") for col in google_trends.columns]
+        google_trends = google_trends.set_index("Month")
+        st.line_chart(google_trends)
 
 
 ######## Archibald ########

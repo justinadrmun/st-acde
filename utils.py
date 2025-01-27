@@ -182,6 +182,9 @@ def fetch_daao_austlist_works():
 def fetch_kmn_artists_exhibitions():
     return pd.read_csv("data/kmn_artists_exhibitions.csv")
 
+def fetch_google_trends_data():
+    return pd.read_csv("data/google_trends_data.csv", skiprows=1)
+
 @st.dialog("Raw data", width="large")
 def inspect_data(frame):
         st.write("")

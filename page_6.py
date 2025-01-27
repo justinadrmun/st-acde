@@ -11,13 +11,13 @@ def generate_tab1():
     with color_col[1]:
         color_cols = st.columns([1, 1, 1], gap="small")
         with color_cols[0]:
-            st.header("**AusStage**")
+            st.subheader("**AusStage**")
             austage_color = st.color_picker("Pick A Color", "#2ca02c", key="austage_color", help="Original hex color: #2ca02c")
         with color_cols[1]:
-            st.header("**DAAO**")
+            st.subheader("**DAAO**")
             daao_color = st.color_picker("Pick A Color", "#1f77b4", key="daao_color", help="Original hex color: #1f77b4")
         with color_cols[2]:
-            st.header("**IMDB**")
+            st.subheader("**IMDB**")
             imdb_color = st.color_picker("Pick A Color", "#ff7f0e", key="imdb_color", help="Original hex color: #ff7f0e")
 
     st.divider()

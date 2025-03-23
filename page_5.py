@@ -3,8 +3,9 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+import json
 
-from utils import fetch_kmn_data, fetch_kmn_artists_exhibitions
+from utils import fetch_kmn_data, fetch_kmn_artists_exhibitions, fetch_daao_kmn_data, inspect_data
 from custom_plot_funcs.population_pyramid import population_pyramid
 
 import pycountry_convert as pc
@@ -176,7 +177,7 @@ def generate_tab2():
         space_cols = st.columns([0.01,1])
         with space_cols[1]:
                 st.write(f":large_orange_circle: = indigenous artists | :large_blue_circle: = non-indigenous artists")
-        kmn = fetch_kmn_data()
+        kmn = fetch_kmn_data(v2=True)
         indigenous = "First Nations People Group (from Know My Name only)"
         # if indigenous col is null then make colour #0044ff, else #FF0000
         kmn["color"] = kmn[indigenous].apply(lambda x: "#1f77b4" if pd.isnull(x) else "#ff7f0e")
@@ -191,7 +192,7 @@ def generate_tab2():
                         color="color",
                         zoom=1
                         )
-        else:
+        else:   
                 australia = kmn["Country of Birth"] == "Australia"
                 st.map(kmn[australia][["Artist","Country of Birth","Place of Birth Longitude", "Place of Birth Latitude","color"]]\
                 .dropna()\
@@ -201,6 +202,63 @@ def generate_tab2():
                         color="color",
                         zoom=3
                         )
+        
+        st.write("")
+        st.subheader(f"**Map of Indigenous artists' birthplaces and exhibition data:**")
+        space_cols = st.columns([0.01,1])
+        with space_cols[1]:
+                st.write(f":large_orange_circle: = indigenous artists | :large_green_circle: = exhibitions")
+
+        kmn = fetch_kmn_data(v2=True)
+        kmn_daao = fetch_daao_kmn_data()
+        indigenous = "First Nations People Group (from Know My Name only)"
+        kmn_indigenous = kmn[kmn[indigenous].notnull()]
+
+        kmn_daao_indigenous = pd.merge(kmn_daao, kmn_indigenous[["Link to DAAO"]], on="Link to DAAO", how="inner")
+
+        kmn_daao_indigenous_exhibitions = []
+        kmn_daao_indigenous_exhibitions_names = []
+        kmn_daao_indigenous_exhibitions_display_names = []
+        for idx, row in kmn_daao_indigenous.iterrows():
+                if pd.isnull(row["related_events"]):
+                        continue
+                
+                related_event_data = pd.json_normalize(json.loads(row["related_events"]))
+                exhibition_coverage = related_event_data["object.coverage_ranges"]
+
+                for exhibition in exhibition_coverage:
+                        exhibition_data = pd.json_normalize(exhibition)
+                        if exhibition_data.shape[0] == 0:
+                                continue
+                        if "place.geo_coord.latitude" not in exhibition_data.columns:
+                                continue
+                        if "place.geo_coord.longitude" not in exhibition_data.columns:
+                                continue
+
+                        lat = exhibition_data["place.geo_coord.latitude"].values[0]
+                        long = exhibition_data["place.geo_coord.longitude"].values[0]
+                        kmn_daao_indigenous_exhibitions.append((lat, long))
+                        kmn_daao_indigenous_exhibitions_names.append(exhibition_data["place.address.ori_address"].values[0])
+                        kmn_daao_indigenous_exhibitions_display_names.append(row.display_name)
+
+        kmn_daao_indigenous_exhibitions_df = pd.DataFrame(kmn_daao_indigenous_exhibitions, columns=["lat", "lon"])
+        kmn_daao_indigenous_exhibitions_df["color"] = "#2ca02c"
+        kmn_daao_indigenous_exhibitions_df["exhibition_placename"] = kmn_daao_indigenous_exhibitions_names
+        kmn_daao_indigenous_exhibitions_df["display_name"] = kmn_daao_indigenous_exhibitions_display_names
+
+        kmn_indigenous_lat_long = kmn_indigenous[[
+        "Artist",'Place of Birth Latitude', 'Place of Birth Longitude',"Place of Birth (First Nations Language)", "Place of Birth (Anglophone)"
+        ]].dropna().rename(columns={
+        "Artist": "display_name",
+        'Place of Birth Latitude': 'lat',
+        'Place of Birth Longitude': 'lon'
+        })
+        kmn_indigenous_lat_long["color"] = "#ff7f0e"
+        kmn_indigenous_lat_long_exhibtions = pd.concat([kmn_daao_indigenous_exhibitions_df, kmn_indigenous_lat_long])
+        st.map(kmn_indigenous_lat_long_exhibtions[['lat',"lon","color"]],color="color",zoom=1)
+
+        if st.button("Inspect data :mag_right:"):
+                inspect_data(kmn_indigenous_lat_long_exhibtions)
 
 def generate_tab3():
         st.caption("""

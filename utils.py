@@ -12,11 +12,16 @@ def fetch_kmn_data(v2=False):
 
 def fetch_daao_kmn_data(v2=False):
     if v2:
-        return pd.read_csv("data-v2/daao_kmn_individuals-v2.csv")
+        pass
     return pd.read_csv("data/daao_kmn_individuals.csv")
 
-def fetch_daao_kmn_alt_names():
-    daao_frame = fetch_daao_kmn_data()
+def fetch_daao_kmn_alt_names(v2=False):
+    if v2:
+        return pd.read_csv("data-v2/alternative-names-nat-v2.csv",encoding='latin-1')
+    else:
+        daao_frame = fetch_daao_kmn_data()
+        manual_alt_names_path = 'data/manual_alt_name_cats.txt'
+
     alt_names = daao_frame[daao_frame["alternative_names"].notnull()][
         ["display_name", "primary_name", "alternative_names"]]
     
@@ -38,7 +43,7 @@ def fetch_daao_kmn_alt_names():
             .rename(columns={'index': 'display_name'})
     
     manual_categories = []
-    with open('data/manual_alt_name_cats.txt', 'r') as f:
+    with open(manual_alt_names_path, 'r') as f:
         [manual_categories.append(
             line.split('#')[0]\
                 .replace('"', '')\
@@ -55,9 +60,9 @@ def fetch_daao_kmn_alt_names():
 
 def fetch_daao_kmn_related_people_records(v2=False):
     if v2:
-        kmn_frame = fetch_kmn_data(v2=True) # KMN data
-        daao_frame = fetch_daao_kmn_data(v2=True) # DAAO data of KMN artists
-        daao_related_people = fetch_daao_kmn_related_people(v2=True) # related people according to DAAO, n=593
+        kmn_frame = fetch_kmn_data() # KMN data
+        daao_frame = fetch_daao_kmn_data() # DAAO data of KMN artists
+        daao_related_people = fetch_daao_kmn_related_people() # related people according to DAAO, n=593
     else:
         kmn_frame = fetch_kmn_data() # KMN data
         daao_frame = fetch_daao_kmn_data() # DAAO data of KMN artists
@@ -102,15 +107,18 @@ def fetch_daao_kmn_related_people(v2=False):
     '''Fetch DAAO data of related people (according to DAAO) to KMN artists'''
     if v2:
         # no difference between v1 and v2
-        return pd.read_csv("data/daao_kmn_related_persons.csv")
+        pass
     return pd.read_csv("data/daao_kmn_related_persons.csv")
 
-def fetch_daao_kmn_related_people_withcount():
+def fetch_daao_kmn_related_people_withcount(v2=False):
+    if v2:
+        # no difference between v1 and v2
+        pass
     return pd.read_csv("data/daao_kmn_related_people_withcount.csv")
 
 def fetch_daao_recognised_individuals(v2=False):
     if v2:
-        return pd.read_csv("data-v2/daao_recognised_individuals-v2.csv")
+        pass
     return pd.read_csv("data/daao_recognised_individuals.csv")
 
 def fetch_archibald_participant_data(filter=None):
@@ -192,7 +200,7 @@ def fetch_plot_data_for_archie_timeline():
 
 def fetch_daao_austlist_works(v2=False):
     if v2:
-        return pd.read_csv('data-v2/daao_austlit_works-v2.csv')
+        pass
     return pd.read_csv('data/daao_austlit_works.csv')
 
 def fetch_kmn_artists_exhibitions():

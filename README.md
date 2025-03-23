@@ -1,6 +1,6 @@
 # ACDE Streamlit Dashboard
 
-A multi-page Streamlit application for visualising data across different analytical sections. This demo showcases various data insights through approximately 20 visualisations spread across 5 sections.
+A multi-page Streamlit application for visualising data across different analytical sections. This demo showcases various data insights through approx. 20 visualisations spread across 5 sections.
 
 ## Installation
 

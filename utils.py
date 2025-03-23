@@ -195,6 +195,15 @@ def fetch_daao_austlist_works(v2=False):
         return pd.read_csv('data-v2/daao_austlit_works-v2.csv')
     return pd.read_csv('data/daao_austlit_works.csv')
 
+def fetch_kmn_artists_exhibitions():
+    return pd.read_csv("data/kmn_artists_exhibitions.csv")
+
+def fetch_google_trends_data():
+    return pd.read_csv("data/google_trends_data.csv", skiprows=1)
+
+def fetch_george_gittoes_timeline_data():
+    return pd.read_csv("data/george_gittoes.csv")
+
 @st.dialog("Raw data", width="large")
 def inspect_data(frame):
         st.write("")

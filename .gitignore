@@ -14,5 +14,6 @@ check_versions.py
 
 # data
 data/kmn.xlsx
+data/kmn_v2.xlsx
 data/acde_person.csv
 notebooks/

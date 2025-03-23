@@ -5,10 +5,14 @@ import ast
 import json
 import warnings
 
-def fetch_kmn_data():
+def fetch_kmn_data(v2=False):
+    if v2:
+        return pd.read_csv("data-v2/kmn_with_related_data-v2.csv")
     return pd.read_csv("data/kmn_with_related_data.csv")
 
-def fetch_daao_kmn_data():
+def fetch_daao_kmn_data(v2=False):
+    if v2:
+        return pd.read_csv("data-v2/daao_kmn_individuals-v2.csv")
     return pd.read_csv("data/daao_kmn_individuals.csv")
 
 def fetch_daao_kmn_alt_names():
@@ -49,10 +53,15 @@ def fetch_daao_kmn_alt_names():
         ["Rearranged Names", "Spacing"])]
     return alt_names_frame
 
-def fetch_daao_kmn_related_people_records():
-    kmn_frame = fetch_kmn_data() # KMN data
-    daao_frame = fetch_daao_kmn_data() # DAAO data of KMN artists
-    daao_related_people = fetch_daao_kmn_related_people() # related people according to DAAO, n=593
+def fetch_daao_kmn_related_people_records(v2=False):
+    if v2:
+        kmn_frame = fetch_kmn_data(v2=True) # KMN data
+        daao_frame = fetch_daao_kmn_data(v2=True) # DAAO data of KMN artists
+        daao_related_people = fetch_daao_kmn_related_people(v2=True) # related people according to DAAO, n=593
+    else:
+        kmn_frame = fetch_kmn_data() # KMN data
+        daao_frame = fetch_daao_kmn_data() # DAAO data of KMN artists
+        daao_related_people = fetch_daao_kmn_related_people() # # related people according to DAAO, n=593
 
     # identify KMN artists with related people, n=142
     frame_related_people = kmn_frame[kmn_frame.related_people.notnull()]
@@ -89,14 +98,19 @@ def fetch_daao_kmn_related_people_records():
     related_records = related_records.merge(daao_related_people_gender, left_on='related_person_oid', right_on='ori_dbid', how='inner')
     return related_records.drop(columns=['ori_dbid'])
 
-def fetch_daao_kmn_related_people():
+def fetch_daao_kmn_related_people(v2=False):
     '''Fetch DAAO data of related people (according to DAAO) to KMN artists'''
+    if v2:
+        # no difference between v1 and v2
+        return pd.read_csv("data/daao_kmn_related_persons.csv")
     return pd.read_csv("data/daao_kmn_related_persons.csv")
 
 def fetch_daao_kmn_related_people_withcount():
     return pd.read_csv("data/daao_kmn_related_people_withcount.csv")
 
-def fetch_daao_recognised_individuals():
+def fetch_daao_recognised_individuals(v2=False):
+    if v2:
+        return pd.read_csv("data-v2/daao_recognised_individuals-v2.csv")
     return pd.read_csv("data/daao_recognised_individuals.csv")
 
 def fetch_archibald_participant_data(filter=None):
@@ -176,7 +190,9 @@ def fetch_plot_data_for_archie_timeline():
     artist_df = artist_df.sort_values(by='First Year', ascending=True).drop(columns='First Year')
     return pd.concat([artist_df, pd.DataFrame(columns=range(artist_df.columns[-1]+1, 102))], axis=1)
 
-def fetch_daao_austlist_works():
+def fetch_daao_austlist_works(v2=False):
+    if v2:
+        return pd.read_csv('data-v2/daao_austlit_works-v2.csv')
     return pd.read_csv('data/daao_austlit_works.csv')
 
 @st.dialog("Raw data", width="large")

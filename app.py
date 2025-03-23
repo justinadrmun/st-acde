@@ -50,46 +50,77 @@ if check_password():
         st.header("Overview")
         with st.expander("About the Dataset", expanded=False):
             st.markdown("""
-                        #### Basic Information
+                        ### Basic Information
                         - The dataset contains **283 entries** and **31 columns**.
-                        - The columns include various attributes related to artists and their exhibitions.
+                        - The columns include various attributes related to artists, such as their names, birth and death details, links to exhibition pages, and more.
 
                         #### Descriptive Statistics
                         - **Artist Name and Link to Know My Name Exhibition Page**: 283 unique entries.
-                        - **Collective/Individual**: Mostly "Individual" (263 out of 282 entries).
-                        - **First Nations People Group (from Know My Name only)**: 40 entries, with "Gija People" being the most frequent (3 times).
-                        - **Place of Birth (First Nations Language)**: 230 entries, with "Gadigal Land" being the most frequent (53 times).
-                        - **Place of Birth (Anglophone)**: 269 entries, with "Sydney" being the most frequent (46 times).
-                        - **State of Birth**: 248 entries, with "NSW" being the most frequent (67 times).
-                        - **Country of Birth**: 275 entries, with "Australia" being the most frequent (226 times).
-                        - **Place of Birth Latitude and Longitude**: 274 entries each, with mean latitude of -20.64 and mean longitude of 120.40.
-                        - **Year of Birth**: 282 entries, with 1959 being the most frequent year (10 times).
-                        - **Date of Birth**: 126 entries.
-                        - **Place of Death (Indigenous)**: 252 entries.
-                        - **Place of Death (Anglophone)**: 267 entries.
-                        - **State of Death**: 265 entries.
-                        - **Country of Death**: 269 entries.
-                        - **Place of Death Latitude and Longitude**: 97 entries each.
-                        - **Year of Death**: 283 entries.
-                        - **Date of Death**: 261 entries.
-                        - **Link to DAAO**: 279 entries.
-                        - **In DAAO 2,188**: 282 entries.
-                        - **Link to AWR**: 22 entries.
-                        - **Author of NGA Essay**: 155 entries, with "Tina Baum" being the most frequent (6 times).
-                        - **Page of Book**: 155 entries, with a mean of 205.69 pages.
-                        - **Anne Marsh Critic Author Full Citations**: 34 entries.
-                        - **Anne Marsh Critic Authors**: 33 entries.
-                        - **Anne Marsh Discussions**: 68 entries.
-                        - **Illustration Included?**: 68 entries, with "Y" being the most frequent (62 times).
-                        - **Link to NLA**: 281 entries.
-                        - **Multiple NLA**: 281 entries.
-                        - **Missing NLA**: 281 entries.
+                        - **Collective/Individual**: Mostly individuals (264 out of 283).
+                        - **First Nations People Group (from Know My Name only)**: 40 entries, with 'Gija People' being the most frequent (3 times).
+                        - **Place of Birth (First Nations Language)**: 230 entries, with 'Gadigal Land' being the most frequent (53 times).
+                        - **Place of Birth (Anglophone)**: 269 entries, with 'Sydney' being the most frequent (46 times).
+                        - **State of Birth**: 269 entries, with 'NSW' being the most frequent (67 times).
+                        - **Country of Birth**: 275 entries, with 'Australia' being the most frequent (226 times).
+                        - **Place of Birth Latitude**: Mean = -20.64, Std = 27.98.
+                        - **Place of Birth Longitude**: Mean = 120.40, Std = 62.18.
+                        - **Year of Birth**: 282 entries, with '1959' being the most frequent (10 times).
+                        - **Date of Birth**: 126 unique entries.
+                        - **Place of Death (Indigenous)**: 252 entries, with 'N/A (Still Living)' being the most frequent (170 times).
+                        - **Place of Death (Anglophone)**: 267 entries, with 'N/A (Still Living)' being the most frequent (170 times).
+                        - **State of Death**: 265 entries, with 'N/A (Still Living)' being the most frequent (170 times).
+                        - **Country of Death**: 269 entries, with 'N/A (Still Living)' being the most frequent (170 times).
+                        - **Place of Death Latitude**: Mean = -20.27, Std = 29.89.
+                        - **Place of Death Longitude**: Mean = 119.12, Std = 59.64.
+                        - **Year of Death**: 283 entries, with 'N/A (Still Living)' being the most frequent (170 times).
+                        - **Date of Death**: 261 entries, with 'N/A (Still Living)' being the most frequent (170 times).
+                        - **Link to DAAO**: 283 entries, with '[Not in DAAO]' being the most frequent (48 times).
+                        - **In DAAO 2,188**: 283 entries, with 'Y' being the most frequent (107 times).
+                        - **Link to AWR**: 21 unique entries.
+                        - **Author of NGA Essay**: 155 entries, with 'Tina Baum' being the most frequent (6 times).
+                        - **Page of Book**: Mean = 205.69, Std = 105.74.
+                        - **Anne Marsh Critic Author Full Citations**: 34 unique entries.
+                        - **Anne Marsh Critic Authors**: 33 unique entries.
+                        - **Anne Marsh Discussions**: 68 unique entries.
+                        - **Illustration Included?**: 68 entries, with 'Y' being the most frequent (62 times).
+                        - **Link to NLA**: 283 entries, with '[Not in NLA]' being the most frequent (35 times).
+                        - **Multiple NLA**: 283 entries, with 'N' being the most frequent (241 times).
+                        - **Missing NLA**: 283 entries, with 'N' being the most frequent (248 times).
 
                         #### Missing Values
-                        - Significant missing values in columns like "First Nations People Group (from Know My Name only)" (243 missing), "Date of Birth" (157 missing), "Place of Death Latitude" (186 missing), and "Link to AWR" (261 missing).
+                        - **First Nations People Group (from Know My Name only)**: 243 missing values.
+                        - **Place of Birth (First Nations Language)**: 53 missing values.
+                        - **Place of Birth (Anglophone)**: 14 missing values.
+                        - **State of Birth**: 14 missing values.
+                        - **Country of Birth**: 8 missing values.
+                        - **Place of Birth Latitude**: 9 missing values.
+                        - **Place of Birth Longitude**: 9 missing values.
+                        - **Year of Birth**: 1 missing value.
+                        - **Date of Birth**: 157 missing values.
+                        - **Place of Death (Indigenous)**: 31 missing values.
+                        - **Place of Death (Anglophone)**: 16 missing values.
+                        - **State of Death**: 18 missing values.
+                        - **Country of Death**: 14 missing values.
+                        - **Place of Death Latitude**: 186 missing values.
+                        - **Place of Death Longitude**: 186 missing values.
+                        - **Date of Death**: 22 missing values.
+                        - **Link to AWR**: 262 missing values.
+                        - **Author of NGA Essay**: 128 missing values.
+                        - **Page of Book**: 128 missing values.
+                        - **Anne Marsh Critic Author Full Citations**: 249 missing values.
+                        - **Anne Marsh Critic Authors**: 250 missing values.
+                        - **Anne Marsh Discussions**: 215 missing values.
+                        - **Illustration Included?**: 215 missing values.
+
+                        ### Insights
+                        - The dataset primarily consists of individual artists.
+                        - A significant number of artists were born in Sydney, NSW, Australia.
+                        - Many entries have missing values, especially in columns related to First Nations People Group, Date of Birth, and Place of Death Latitude/Longitude.
+                        - The majority of artists are still living, as indicated by the frequent 'N/A (Still Living)' entries in death-related columns.
+                        - There is a notable presence of artists linked to the DAAO and NLA databases.
             """
             )
-        kmn = fetch_kmn_data()
+        kmn = fetch_kmn_data(v2=True)
         if st.button("Inspect data :mag_right:"):
                 inspect_data(kmn)
         
@@ -169,6 +200,14 @@ if check_password():
                     .rename(
                     columns={"Place of Birth Latitude": "lat", 
                                 "Place of Birth Longitude": "lon"}))
+
+            # plot a map of the artists' birthplaces
+            st.write("Map of artists' deathplaces")
+            st.map(kmn[["Place of Death Latitude", "Place of Death Longitude"]]
+                    .dropna()
+                    .rename(
+                    columns={"Place of Death Latitude": "lat", 
+                                "Place of Death Longitude": "lon"}))
 
     if selection == "Exhibition":
         import page_1

@@ -108,7 +108,7 @@ def generate_tab4(params):
         columns = st.columns([0.7, 0.3])
 
         with columns[0]:
-                related_records = fetch_daao_kmn_related_people_records()
+                related_records = fetch_daao_kmn_related_people_records(v2=True)
                 st.write(f"**Predicate type of DAAO people relations (n={related_records.shape[0]}):**")
                 st.caption("Predicate types are the types of relationships between a given KMN artist and related person in the DAAO.")
                 if st.button("Inspect data :mag_right:", key="daao_relations"):
@@ -116,7 +116,7 @@ def generate_tab4(params):
                 st.bar_chart(related_records["predicate"].value_counts(), horizontal=True)
                 
         with columns[1]:
-                daao_related_people = fetch_daao_kmn_related_people()
+                daao_related_people = fetch_daao_kmn_related_people(v2=True)
                 st.write(f"**Gender distribution of DAAO related people (n={daao_related_people.shape[0]}):**")
                 st.caption("This data consists of all the people records in the DAAO who are related to KMN artists.")
                 if st.button("Inspect data :mag_right:", key="daao_related_people"):
@@ -135,7 +135,7 @@ def generate_tab4(params):
         summary = counts.merge(props, left_index=True, right_index=True, suffixes=('_count', '_proportion'))
         summary.reset_index(inplace=True)
         summary = summary.merge(related_records[["Artist","Link to DAAO"]].drop_duplicates(), on="Artist", how="inner")
-        summary = summary.merge(fetch_kmn_data()[["Link to DAAO", "Year of Birth"]], on="Link to DAAO", how="inner")
+        summary = summary.merge(fetch_kmn_data(v2=True)[["Link to DAAO", "Year of Birth"]], on="Link to DAAO", how="inner")
 
         # show missing values for year of birth
         summary = summary[summary['Year of Birth'].notnull()]
@@ -288,7 +288,7 @@ page1_dict = {
 
 def show():
         st.header("Data comparisons")
-        kmn = fetch_kmn_data()
+        kmn = fetch_kmn_data(v2=True)
         params = {'frame': kmn}
 
         tabs = st.tabs(list(page1_dict.keys()))
